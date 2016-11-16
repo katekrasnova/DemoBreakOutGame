@@ -7,13 +7,26 @@
 //
 
 #import "GameViewController.h"
-#import "GameScene.h"
+#import "GameStart.h"
+@import GameKit;
 
 @implementation GameViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    GKLocalPlayer *playa = [GKLocalPlayer localPlayer];
+    [playa setAuthenticateHandler:^(UIViewController * _Nullable viewController, NSError * _Nullable error) {
+        //SKView * skView = (SKView *)self.view;
+        //[skView setPaused:YES];
+        if (error) {
+            NSLog(@"Error here full %@", error);
+        }
+        if (viewController) {
+            [self presentViewController:viewController animated:YES completion:nil];
+        }
+    }];
 
     // Configure the view.
     SKView * skView = (SKView *)self.view;
@@ -23,7 +36,7 @@
     skView.ignoresSiblingOrder = YES;
     
     // Create and configure the scene.
-    GameScene *scene = [GameScene nodeWithFileNamed:@"GameScene"];
+    GameStart *scene = [GameStart nodeWithFileNamed:@"GameStart"];
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
     // Present the scene.
